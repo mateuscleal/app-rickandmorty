@@ -1,0 +1,51 @@
+name: app
+description: "A new Flutter project."
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.8.1
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+  http: ^1.4.0
+  path: ^1.9.1
+  provider: ^6.1.5
+  path_provider: ^2.1.5
+  graphql_flutter: ^5.2.0
+
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+
+  image_picker: ^1.1.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^6.0.0
+  rename_app: ^1.6.3
+  flutter_launcher_icons: ^0.14.3
+
+flutter:
+
+  uses-material-design: true
+
+  assets:
+    - assets/icons/
+    - assets/images/
+
+# https://pub.dev/packages/flutter_launcher_icons
+# must run `flutter pub run flutter_launcher_icons` after updating icon in order to take effect
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  remove_alpha_ios: true
+  image_path: "assets/icons/app_icon.png"
+
+

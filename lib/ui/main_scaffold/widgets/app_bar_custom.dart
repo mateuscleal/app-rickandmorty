@@ -2,6 +2,8 @@ import 'package:app/ui/_core/theme/app_colors.dart';
 import 'package:app/ui/main_scaffold/view_models/main_scaffold_view_model.dart';
 import 'package:flutter/material.dart';
 
+import '../../../routing/app_routes.dart';
+
 class AppBarCustom extends StatefulWidget implements PreferredSizeWidget {
   final MainScaffoldViewModel viewModel;
   final Future<bool> Function(String value) searchEpisodes;
@@ -29,6 +31,13 @@ class _AppBarCustomState extends State<AppBarCustom> {
       foregroundColor: AppColors.primary,
       title: Image.asset(viewModel.titles[viewModel.currentIndex], width: 200),
       centerTitle: true,
+      leading: Visibility(
+        visible: !viewModel.isExpanded,
+        child: IconButton(
+          icon: Icon(Icons.logout_outlined, color: AppColors.primary),
+          onPressed: () => Navigator.of(context).pushNamedAndRemoveUntil(AppRoutes.splash, (route) => false),
+        ),
+      ),
       actions: [
         Visibility(
           visible: viewModel.currentIndex == 1,

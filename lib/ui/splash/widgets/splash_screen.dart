@@ -22,12 +22,12 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void _startProgress() {
-    _timer = Timer.periodic(const Duration(milliseconds: 200), (timer) {
+    _timer = Timer.periodic(const Duration(milliseconds: 150), (timer) {
       progressNotifier.value += 0.05;
 
       if (progressNotifier.value >= 1.0) {
         timer.cancel();
-        Navigator.of(context).pushReplacementNamed(AppRoutes.mainScaffold);
+        Navigator.of(context).pushReplacementNamed(AppRoutes.authentication);
       }
     });
   }
@@ -44,9 +44,7 @@ class _SplashScreenState extends State<SplashScreen> {
             Container(
               width: 300,
               height: 100,
-              decoration: BoxDecoration(
-                image: DecorationImage(image: AssetImage('assets/images/logo_rm_home.png')),
-              ),
+              decoration: BoxDecoration(image: DecorationImage(image: AssetImage('assets/images/logo_rm_home.png'))),
             ),
             SizedBox(
               width: 250,

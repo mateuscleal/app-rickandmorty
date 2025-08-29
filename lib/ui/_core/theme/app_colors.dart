@@ -8,5 +8,6 @@ class AppColors {
   static const Color backgroundCard = Color(0xFF121212); // Preto para texto
   static const Color textPrimary = Color(0xFFFFFFFF); // Branco para texto
   static const Color textSecondary = Color(0xFFB3B3B3); // Cinza claro
+  static const Color textTertiary = Color(0xFF000000); // Preto
   static const Color buttonColor = Color(0xFF2A87D4); // Azul para botões
 }

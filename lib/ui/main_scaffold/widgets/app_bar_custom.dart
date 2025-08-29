@@ -1,5 +1,4 @@
 import 'package:app/ui/_core/theme/app_colors.dart';
-import 'package:app/ui/_core/view_models/episodes_view_model.dart';
 import 'package:app/ui/main_scaffold/view_models/main_scaffold_view_model.dart';
 import 'package:flutter/material.dart';
 

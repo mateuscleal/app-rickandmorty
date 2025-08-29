@@ -35,9 +35,7 @@ class MainScaffoldScreen extends StatelessWidget {
                 GestureDetector(
                   onTap: () async {
                     await episodesViewModel.searchEpisodes('');
-                    if (viewModel.isExpanded) {
-                      viewModel.toggleSearch();
-                    }
+                    if (viewModel.isExpanded) viewModel.toggleSearch();
                     viewModel.getIndex(0);
                   },
                   child: BottomNavBarItems(
@@ -50,9 +48,7 @@ class MainScaffoldScreen extends StatelessWidget {
                 GestureDetector(
                   onTap: () async {
                     await episodesViewModel.searchEpisodes('');
-                    if (viewModel.isExpanded) {
-                      viewModel.toggleSearch();
-                    }
+                    if (viewModel.isExpanded) viewModel.toggleSearch();
                     viewModel.getIndex(1);
                   },
                   child: BottomNavBarItems(
@@ -65,9 +61,7 @@ class MainScaffoldScreen extends StatelessWidget {
                 GestureDetector(
                   onTap: () async {
                     await episodesViewModel.searchEpisodes('');
-                    if (viewModel.isExpanded) {
-                      viewModel.toggleSearch();
-                    }
+                    if (viewModel.isExpanded) viewModel.toggleSearch();
                     episodesViewModel.getFavoriteEpisodes();
                     viewModel.getIndex(2);
                   },

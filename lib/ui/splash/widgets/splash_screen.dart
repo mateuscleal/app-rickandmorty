@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:app/routing/app_routes.dart';
 import 'package:app/ui/_core/theme/app_colors.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -22,14 +23,26 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void _startProgress() {
-    _timer = Timer.periodic(const Duration(milliseconds: 150), (timer) {
+    _timer = Timer.periodic(const Duration(milliseconds: 150), (timer) async {
       progressNotifier.value += 0.05;
 
       if (progressNotifier.value >= 1.0) {
         timer.cancel();
-        Navigator.of(context).pushReplacementNamed(AppRoutes.authentication);
+        await _handleNavigation();
       }
     });
+  }
+
+  Future<void> _handleNavigation() async {
+    final User? user = FirebaseAuth.instance.currentUser;
+
+    if (user == null) {
+      Navigator.of(context).pushReplacementNamed(AppRoutes.authentication);
+    } else if (!user.emailVerified) {
+      Navigator.of(context).pushReplacementNamed(AppRoutes.verifyEmail);
+    } else {
+      Navigator.of(context).pushReplacementNamed(AppRoutes.mainScaffold);
+    }
   }
 
   @override

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class SimpleEpisodeCard extends StatelessWidget {
   const SimpleEpisodeCard({super.key, required this.episode});
 
-  final Episode episode;
+  final EpisodeModel episode;
 
   @override
   Widget build(BuildContext context) {

@@ -34,7 +34,7 @@ class FavoritesScreen extends StatelessWidget {
                     if (index == viewModel.favoriteEpisodes.length) {
                       return SizedBox(height: 80);
                     }
-                    final episode = viewModel.favoriteEpisodes[index] as Episode;
+                    final episode = viewModel.favoriteEpisodes[index] as EpisodeModel;
                     return GestureDetector(
                       onTap: () {
                         viewModel.setReference(int.parse(episode.id) - 1);

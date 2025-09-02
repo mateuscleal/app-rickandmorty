@@ -34,7 +34,7 @@ class _AppBarCustomState extends State<AppBarCustom> {
       leading: Visibility(
         visible: !viewModel.isExpanded,
         child: IconButton(
-          icon: Icon(Icons.logout_outlined, color: AppColors.primary),
+          icon: Icon(Icons.logout_outlined, color: AppColors.secondary),
           onPressed: () => Navigator.of(context).pushNamedAndRemoveUntil(AppRoutes.splash, (route) => false),
         ),
       ),

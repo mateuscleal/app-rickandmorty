@@ -19,7 +19,7 @@ class EpisodesViewModel extends ChangeNotifier {
 
   int get idReference => _idReference;
 
-  void initRepository(EpisodeRepositoryImpl repo) {
+  void init(EpisodeRepositoryImpl repo) {
     _repository = repo;
     _filter = '';
     fetchEpisodes();

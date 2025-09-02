@@ -45,7 +45,7 @@ class EpisodesScreen extends StatelessWidget {
                     if (index == viewModel.episodes.length) {
                       return SizedBox(height: 80);
                     }
-                    final Episode episode = viewModel.episodes[index];
+                    final EpisodeModel episode = viewModel.episodes[index];
                     return GestureDetector(
                       onTap: () {
                         viewModel.setReference(int.parse(episode.id) - 1);

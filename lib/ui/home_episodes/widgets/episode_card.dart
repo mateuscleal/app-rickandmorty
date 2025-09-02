@@ -6,7 +6,7 @@ import '../../../domain/models/episode.dart';
 class EpisodeCard extends StatelessWidget {
   const EpisodeCard({super.key, required this.episode, required this.markAsWatched, required this.markAsFavorite});
 
-  final Episode episode;
+  final EpisodeModel episode;
   final Function(int id) markAsWatched;
   final Function(int id) markAsFavorite;
 

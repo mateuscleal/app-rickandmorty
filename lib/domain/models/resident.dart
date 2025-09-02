@@ -1,12 +1,12 @@
-class Resident {
+class ResidentModel {
   final String id;
   final String name;
   final String image;
 
-  Resident({required this.id, required this.name, required this.image});
+  ResidentModel({required this.id, required this.name, required this.image});
 
-  factory Resident.fromMap(Map<String, dynamic> data) {
-    return Resident(id: data['id'], name: data['name'], image: data['image']);
+  factory ResidentModel.fromMap(Map<String, dynamic> data) {
+    return ResidentModel(id: data['id'], name: data['name'], image: data['image']);
   }
 
   Map<String, dynamic> toMap() {

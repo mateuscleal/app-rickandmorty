@@ -35,7 +35,7 @@ class LocationsScreen extends StatelessWidget {
                   if (index == viewModel.locations.length) {
                     return SizedBox(height: 90);
                   }
-                  final location = Location.fromMap(viewModel.locations[index]);
+                  final location = LocationModel.fromMap(viewModel.locations[index]);
                   return GestureDetector(
                     onTap: () {
                       viewModel.setReference(int.parse(location.id) - 1);

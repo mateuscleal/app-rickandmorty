@@ -1,13 +1,13 @@
 import 'resident.dart';
 
-class Location {
+class LocationModel {
   final String id;
   final String name;
   final String type;
   final String dimension;
   final List<dynamic> residents;
 
-  Location({
+  LocationModel({
     required this.id,
     required this.name,
     required this.type,
@@ -15,13 +15,13 @@ class Location {
     required this.residents,
   });
 
-  factory Location.fromMap(Map<String, dynamic> data) {
-    return Location(
+  factory LocationModel.fromMap(Map<String, dynamic> data) {
+    return LocationModel(
       id: data['id'],
       name: data['name'],
       type: data['type'],
       dimension: data['dimension'],
-      residents: data['residents'].map((resident) => Resident.fromMap(resident)).toList(),
+      residents: data['residents'].map((resident) => ResidentModel.fromMap(resident)).toList(),
     );
   }
 

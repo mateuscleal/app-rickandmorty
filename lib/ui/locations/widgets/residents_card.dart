@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class ResidentsCard extends StatelessWidget {
   const ResidentsCard({super.key, required this.resident});
 
-  final Resident resident;
+  final ResidentModel resident;
 
   @override
   Widget build(BuildContext context) {

@@ -29,7 +29,7 @@ class LocationsResidentsScreen extends StatelessWidget {
           return ListView.builder(
             itemCount: residents.length,
             itemBuilder: (_, index) {
-              return ResidentsCard(resident: Resident.fromMap(residents[index]));
+              return ResidentsCard(resident: ResidentModel.fromMap(residents[index]));
             },
           );
         },

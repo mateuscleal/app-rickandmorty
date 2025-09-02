@@ -1,21 +1,20 @@
+import 'package:app/ui/authentication/view_model/auth_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../_core/theme/app_colors.dart';
 import 'sign_in.dart';
 import 'sign_up.dart';
 
 class AuthenticationScreen extends StatelessWidget {
-  AuthenticationScreen({super.key});
-
-  final ValueNotifier<bool> isSignIn = ValueNotifier(true);
+  const AuthenticationScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      body: ValueListenableBuilder<bool>(
-        valueListenable: isSignIn,
-        builder: (context, value, child) => Stack(
+    return Consumer<AuthViewModel>(
+      builder: (context, authViewModel, child) => Scaffold(
+        backgroundColor: AppColors.background,
+        body: Stack(
           children: [
             Stack(
               children: [
@@ -31,10 +30,10 @@ class AuthenticationScreen extends StatelessWidget {
                 ),
                 Positioned(
                   top: -20,
-                  left: 80,
+                  left: 85,
                   child: AnimatedContainer(
                     duration: Duration(milliseconds: 500),
-                    height: isSignIn.value ? 350 : 200,
+                    height: authViewModel.isSignIn ? 200 : 350,
                     width: MediaQuery.of(context).size.width - 150,
                     child: Image.asset('assets/images/logo_rm_home_sbg.png'),
                   ),
@@ -42,10 +41,10 @@ class AuthenticationScreen extends StatelessWidget {
               ],
             ),
             AnimatedContainer(
-              margin: EdgeInsets.only(top: isSignIn.value ? 250 : 150),
+              margin: EdgeInsets.only(top: authViewModel.isSignIn ? 150 : 250),
               duration: Duration(milliseconds: 500),
               width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height - (isSignIn.value ? 250 : 100),
+              height: MediaQuery.of(context).size.height - (authViewModel.isSignIn ? 100 : 250),
               decoration: BoxDecoration(
                 color: AppColors.primary,
                 borderRadius: BorderRadius.only(topLeft: Radius.circular(40), topRight: Radius.circular(40)),
@@ -54,12 +53,12 @@ class AuthenticationScreen extends StatelessWidget {
                 child: Stack(
                   children: [
                     Offstage(
-                      offstage: !isSignIn.value,
-                      child: SignIn(isSignIn: isSignIn),
+                      offstage: authViewModel.isSignIn,
+                      child: SignIn(authViewModel: authViewModel),
                     ),
                     Offstage(
-                      offstage: isSignIn.value,
-                      child: SignUp(isSignIn: isSignIn),
+                      offstage: !authViewModel.isSignIn,
+                      child: SignUp(authViewModel: authViewModel),
                     ),
                   ],
                 ),

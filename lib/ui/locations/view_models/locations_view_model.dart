@@ -13,7 +13,7 @@ class LocationsViewModel extends ChangeNotifier {
 
   List<dynamic> get locations => _locations;
 
-  void initRepository(LocationRepositoryImpl repository) {
+  void init(LocationRepositoryImpl repository) {
     _repository = repository;
     fetchLocations();
     notifyListeners();

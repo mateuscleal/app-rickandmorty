@@ -1,4 +1,4 @@
-class Episode {
+class EpisodeModel {
   final String id;
   final String date;
   final String title;
@@ -8,7 +8,7 @@ class Episode {
   final bool isWatched;
   final bool isFavorite;
 
-  Episode({
+  EpisodeModel({
     required this.id,
     required this.date,
     required this.title,
@@ -19,8 +19,8 @@ class Episode {
     this.isFavorite = false,
   });
 
-  Episode copyWith({bool? isWatched, bool? isFavorite}) {
-    return Episode(
+  EpisodeModel copyWith({bool? isWatched, bool? isFavorite}) {
+    return EpisodeModel(
       id: id,
       date: date,
       title: title,
@@ -32,8 +32,8 @@ class Episode {
     );
   }
 
-  factory Episode.fromMap(Map<String, dynamic> map, Map<dynamic, dynamic> hiveData) {
-    return Episode(
+  factory EpisodeModel.fromMap(Map<String, dynamic> map, Map<dynamic, dynamic> hiveData) {
+    return EpisodeModel(
       id: map['id'],
       title: map['name'],
       date: map['air_date'],

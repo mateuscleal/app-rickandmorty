@@ -9,12 +9,11 @@ class AuthViewModel extends ChangeNotifier {
   AuthRepository? _repo;
   AuthMode _authMode = AuthMode.signUp;
   UserModel? _currentUser;
-  bool _isLoading = false;
+  bool _isLoading = false, _isVerified = false;
 
   UserModel? get currentUser => _currentUser;
-
   bool get isLoading => _isLoading;
-
+  bool get isVerified => _isVerified;
   bool get isSignIn => _authMode == AuthMode.signIn;
 
   void init(AuthRepository repo) {
@@ -35,7 +34,7 @@ class AuthViewModel extends ChangeNotifier {
     }
     final verified = await _repo!.isEmailVerified();
     return {
-      'user': user,
+      'user': true,
       'verified': verified,
     };
   }
@@ -51,28 +50,22 @@ class AuthViewModel extends ChangeNotifier {
   Future<void> signOut() async => _repo!.signOut();
 
   Future<void> sendEmailVerification() async {
-    _isLoading = true;
-    notifyListeners();
     await _repo!.sendEmailVerification();
-    _isLoading = false;
     notifyListeners();
   }
 
-  Future<bool> checkEmailVerified() async {
-    _isLoading = true;
+  Future<void> checkEmailVerified() async {
+    _isVerified = await _repo!.isEmailVerified();
     notifyListeners();
-    final verified = await _repo!.isEmailVerified();
-    _isLoading = false;
-    notifyListeners();
-    return verified;
   }
 
   Future<void> reloadUser() async {
     await _repo!.reloadUser();
+    notifyListeners();
   }
 
   void toggleAuthMode() {
-    _authMode = _authMode == AuthMode.signIn ? AuthMode.signUp : AuthMode.signIn;
+    _authMode = (_authMode == AuthMode.signIn) ? AuthMode.signUp : AuthMode.signIn;
     notifyListeners();
   }
 }

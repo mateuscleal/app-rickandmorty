@@ -5,7 +5,7 @@ import 'package:app/ui/main_scaffold/widgets/main_scaffold_screen.dart';
 import 'package:app/ui/splash/widgets/splash_screen.dart';
 import 'package:flutter/material.dart';
 
-import '../ui/authentication/widgets/verify_email_screen.dart';
+import '../ui/authentication/widgets/email_sent_screen.dart';
 
 class AppRoutes {
   static const String splash = '/splash_screen';
@@ -18,7 +18,7 @@ class AppRoutes {
   static Map<String, WidgetBuilder> routes = {
     splash: (_) => const SplashScreen(),
     authentication: (_) => AuthenticationScreen(),
-    verifyEmail: (_) => VerifyEmailScreen(),
+    verifyEmail: (_) => EmailSentScreen(),
     episodeDetails: (_) => const EpisodeDetailsScreen(),
     locationsResidents: (_) => const LocationsResidentsScreen(),
     mainScaffold: (_) => MainScaffoldScreen(),

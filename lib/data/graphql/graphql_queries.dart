@@ -1,23 +1,18 @@
 const Map<String, dynamic> queries = {
-  'getEpisodes': """
-    query {
-      episodes {
-        info {
-          count
-        }
-        results {
+  'getEpisodesByIds': """
+    query EpisodesByIds(\$ids: [ID!]!) {
+      episodesByIds(ids: \$ids) {
+        id
+        name
+        air_date
+        episode
+        characters {
           id
           name
-          air_date
-          episode
-          characters {
-            id
-            name
-            status
-            species
-            gender
-            image
-          }
+          status
+          species
+          gender
+          image
         }
       }
     }

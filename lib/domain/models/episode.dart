@@ -1,3 +1,5 @@
+import 'dart:math';
+
 class EpisodeModel {
   final String id;
   final String date;
@@ -33,13 +35,14 @@ class EpisodeModel {
   }
 
   factory EpisodeModel.fromMap(Map<String, dynamic> map, Map<dynamic, dynamic> hiveData) {
+    final randomIndex = Random().nextInt(map['characters'].length);
     return EpisodeModel(
       id: map['id'],
       title: map['name'],
       date: map['air_date'],
       characters: map['characters'],
       episodeName: map['episode'],
-      imagePath: hiveData.isNotEmpty ? hiveData['imagePath'] : map['characters'][0]['image'],
+      imagePath: hiveData.isNotEmpty ? hiveData['imagePath'] : map['characters'][randomIndex]['image'],
       isWatched: hiveData.isNotEmpty ? hiveData['isWatched'] : false,
       isFavorite: hiveData.isNotEmpty ? hiveData['isFavorite'] : false,
     );

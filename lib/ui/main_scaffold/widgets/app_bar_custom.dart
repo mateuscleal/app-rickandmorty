@@ -1,3 +1,4 @@
+import 'package:app/data/services/firebase_auth_service.dart';
 import 'package:app/ui/_core/theme/app_colors.dart';
 import 'package:app/ui/main_scaffold/view_models/main_scaffold_view_model.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,7 @@ class AppBarCustom extends StatefulWidget implements PreferredSizeWidget {
 
 class _AppBarCustomState extends State<AppBarCustom> {
   final _focusNode = FocusNode();
+  final FirebaseAuthService _authService = FirebaseAuthService();
   final TextEditingController _controller = TextEditingController();
 
   @override
@@ -35,7 +37,10 @@ class _AppBarCustomState extends State<AppBarCustom> {
         visible: !viewModel.isExpanded,
         child: IconButton(
           icon: Icon(Icons.logout_outlined, color: AppColors.secondary),
-          onPressed: () => Navigator.of(context).pushNamedAndRemoveUntil(AppRoutes.splash, (route) => false),
+          onPressed: () {
+            Navigator.of(context).pushNamedAndRemoveUntil(AppRoutes.splash, (route) => false);
+            _authService.signOut();
+          },
         ),
       ),
       actions: [
@@ -68,9 +73,16 @@ class _AppBarCustomState extends State<AppBarCustom> {
                     final scaffoldMessenger = ScaffoldMessenger.of(context);
                     final flag = await widget.searchEpisodes(value);
                     if (!flag) {
+                      viewModel.toggleSearch();
                       scaffoldMessenger.clearSnackBars();
                       scaffoldMessenger.showSnackBar(
-                        const SnackBar(backgroundColor: Colors.red, content: Text('Episode not found')),
+                        SnackBar(
+                          backgroundColor: Colors.red,
+                          content: Padding(
+                            padding: EdgeInsets.symmetric(vertical: 8.0),
+                            child: Text('Episode not found'),
+                          ),
+                        ),
                       );
                     }
                   },

@@ -52,7 +52,12 @@ class EpisodesViewModel extends ChangeNotifier {
 
     _filter = name;
     _filteredEpisodes = await _repository.searchEpisodes(name);
-    if (_filteredEpisodes.isEmpty) return false;
+    if (_filteredEpisodes.isEmpty) {
+      _filter = '';
+      _loading = false;
+      notifyListeners();
+      return false;
+    }
 
     _loading = false;
     notifyListeners();

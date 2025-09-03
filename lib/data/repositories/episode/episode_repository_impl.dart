@@ -16,26 +16,40 @@ class EpisodeRepositoryImpl implements EpisodeRepository {
   @override
   Future<List<dynamic>> fetchAllEpisodes() async {
     try {
-      final result = await _graphqlService.executeQuery(queries['getEpisodes']);
+      final List<dynamic> list = List.generate(51, (i) => i + 1);
+
+      final result = await _graphqlService.executeQuery(queries['getEpisodesByIds'], variables: {'ids': list});
       if (result.hasException) {
         throw result.exception!;
       }
-      final data = await result.data?['episodes']['results'] ?? [];
-      return data.map((episode) {
+      final data = await result.data?['episodesByIds'] ?? [];
+
+      String imagePath;
+      bool isFavorite, isWatched;
+      final allEpisodes = data.map((episode) {
         final index = int.parse(episode['id']) - 1;
         final hiveData = _hiveManager.getValue(index);
         final randomIndex = Random().nextInt(episode['characters'].length);
+
+        isFavorite = hiveData.isNotEmpty ? hiveData['isFavorite'] : false;
+        isWatched = hiveData.isNotEmpty ? hiveData['isWatched'] : false;
+        imagePath = episode['characters'][randomIndex]['image'];
+
+        updateEpisodeStatus(index, isFavorite, isWatched, imagePath);
+
         return EpisodeModel(
           id: episode['id'],
           title: episode['name'],
           date: episode['air_date'],
           characters: episode['characters'],
           episodeName: episode['episode'],
-          imagePath: episode['characters'][randomIndex]['image'],
-          isFavorite: hiveData.isNotEmpty ? hiveData['isFavorite'] : false,
-          isWatched: hiveData.isNotEmpty ? hiveData['isWatched'] : false,
+          imagePath: imagePath,
+          isFavorite: isFavorite,
+          isWatched: isWatched,
         );
       }).toList();
+
+      return allEpisodes;
     } catch (e) {
       rethrow;
     }
@@ -56,10 +70,6 @@ class EpisodeRepositoryImpl implements EpisodeRepository {
 
   @override
   Future<void> updateEpisodeStatus(int episodeId, bool isFavorite, bool isWatched, String imagePath) async {
-    await HiveManager.setValue(episodeId, {
-      'isFavorite': isFavorite,
-      'isWatched': isWatched,
-      'imagePath': imagePath,
-    });
+    await HiveManager.setValue(episodeId, {'isFavorite': isFavorite, 'isWatched': isWatched, 'imagePath': imagePath});
   }
 }

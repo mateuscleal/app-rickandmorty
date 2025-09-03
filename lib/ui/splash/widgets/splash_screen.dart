@@ -36,10 +36,8 @@ class _SplashScreenState extends State<SplashScreen> {
   Future<void> _handleNavigation() async {
     final User? user = FirebaseAuth.instance.currentUser;
 
-    if (user == null) {
+    if (user == null || !user.emailVerified) {
       Navigator.of(context).pushReplacementNamed(AppRoutes.authentication);
-    } else if (!user.emailVerified) {
-      Navigator.of(context).pushReplacementNamed(AppRoutes.verifyEmail);
     } else {
       Navigator.of(context).pushReplacementNamed(AppRoutes.mainScaffold);
     }

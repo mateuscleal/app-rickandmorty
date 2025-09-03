@@ -1,6 +1,7 @@
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:rounded_loading_button_plus/rounded_loading_button.dart';
 
 import '../../../routing/app_routes.dart';
 import '../../_core/theme/app_colors.dart';
@@ -8,7 +9,6 @@ import '../view_model/auth_view_model.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key, required this.authViewModel});
-
 
   final AuthViewModel authViewModel;
 
@@ -18,7 +18,11 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final textController = List.generate(6, (index) => TextEditingController());
+  final _focusNodes = List.generate(6, (index) => FocusNode());
+  final _obscureText = List.generate(2, (index) => ValueNotifier<bool>(true));
+
+  final _textController = List.generate(6, (index) => TextEditingController());
+  final _buttonController = RoundedLoadingButtonController();
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +43,7 @@ class _SignUpState extends State<SignUp> {
                   if (!focus.hasPrimaryFocus) {
                     focus.unfocus();
                   }
-                  for (var element in textController) {
+                  for (var element in _textController) {
                     element.clear();
                   }
                 },
@@ -57,8 +61,11 @@ class _SignUpState extends State<SignUp> {
                 SizedBox(
                   height: 60,
                   child: TextFormField(
-                    controller: textController[0],
+                    focusNode: _focusNodes[0],
+                    controller: _textController[0],
+                    textInputAction: TextInputAction.next,
                     style: TextStyle(color: Colors.black),
+                    cursorColor: Colors.black,
                     decoration: InputDecoration(
                       labelText: "First Name",
                       filled: true,
@@ -67,6 +74,7 @@ class _SignUpState extends State<SignUp> {
                       floatingLabelBehavior: FloatingLabelBehavior.never,
                       border: OutlineInputBorder(borderRadius: BorderRadius.circular(30), borderSide: BorderSide.none),
                     ),
+                    onFieldSubmitted: (value) => FocusScope.of(context).requestFocus(_focusNodes[1]),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your name';
@@ -78,8 +86,11 @@ class _SignUpState extends State<SignUp> {
                 SizedBox(
                   height: 60,
                   child: TextFormField(
-                    controller: textController[1],
+                    focusNode: _focusNodes[1],
+                    controller: _textController[1],
+                    textInputAction: TextInputAction.next,
                     style: TextStyle(color: Colors.black),
+                    cursorColor: Colors.black,
                     decoration: InputDecoration(
                       labelText: "Last Name",
                       filled: true,
@@ -88,6 +99,7 @@ class _SignUpState extends State<SignUp> {
                       floatingLabelBehavior: FloatingLabelBehavior.never,
                       border: OutlineInputBorder(borderRadius: BorderRadius.circular(30), borderSide: BorderSide.none),
                     ),
+                    onFieldSubmitted: (value) => FocusScope.of(context).requestFocus(_focusNodes[2]),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your last name';
@@ -100,8 +112,11 @@ class _SignUpState extends State<SignUp> {
                 SizedBox(
                   height: 60,
                   child: TextFormField(
-                    controller: textController[2],
+                    focusNode: _focusNodes[2],
+                    controller: _textController[2],
+                    textInputAction: TextInputAction.next,
                     style: TextStyle(color: Colors.black),
+                    cursorColor: Colors.black,
                     decoration: InputDecoration(
                       labelText: "Email",
                       filled: true,
@@ -110,6 +125,7 @@ class _SignUpState extends State<SignUp> {
                       floatingLabelBehavior: FloatingLabelBehavior.never,
                       border: OutlineInputBorder(borderRadius: BorderRadius.circular(30), borderSide: BorderSide.none),
                     ),
+                    onFieldSubmitted: (value) => FocusScope.of(context).requestFocus(_focusNodes[3]),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your email';
@@ -124,9 +140,12 @@ class _SignUpState extends State<SignUp> {
                 SizedBox(
                   height: 60,
                   child: TextFormField(
-                    controller: textController[3],
+                    focusNode: _focusNodes[3],
+                    controller: _textController[3],
+                    textInputAction: TextInputAction.next,
                     keyboardType: TextInputType.phone,
                     style: TextStyle(color: Colors.black),
+                    cursorColor: Colors.black,
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly, TelefoneInputFormatter()],
                     decoration: InputDecoration(
                       labelText: "Cell phone",
@@ -136,6 +155,7 @@ class _SignUpState extends State<SignUp> {
                       floatingLabelBehavior: FloatingLabelBehavior.never,
                       border: OutlineInputBorder(borderRadius: BorderRadius.circular(30), borderSide: BorderSide.none),
                     ),
+                    onFieldSubmitted: (value) => FocusScope.of(context).requestFocus(_focusNodes[4]),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your cell phone';
@@ -146,82 +166,119 @@ class _SignUpState extends State<SignUp> {
                 ),
                 SizedBox(
                   height: 60,
-                  child: TextFormField(
-                    obscureText: true,
-                    controller: textController[4],
-                    style: TextStyle(color: Colors.black),
-                    decoration: InputDecoration(
-                      labelText: "Password",
-                      filled: true,
-                      fillColor: Colors.white,
-                      contentPadding: EdgeInsets.only(left: 12),
-                      floatingLabelBehavior: FloatingLabelBehavior.never,
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(30), borderSide: BorderSide.none),
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your password';
-                      }
-                      if (value.length < 8) {
-                        return 'Password must be at least 8 characters';
-                      }
-                      if (!RegExp(r'[A-Z]').hasMatch(value)) {
-                        return 'Password must contain at least one uppercase letter';
-                      }
-                      if (!RegExp(r'[0-9]').hasMatch(value)) {
-                        return 'Password must contain at least one number';
-                      }
-                      if (!RegExp(r'[!@#$%^&*(),.?":{}|<>]').hasMatch(value)) {
-                        return 'Password must contain at least one special character';
-                      }
-                      return null;
+                  child: ValueListenableBuilder(
+                    valueListenable: _obscureText[0],
+                    builder: (context, value, child) {
+                      return TextFormField(
+                        obscureText: value,
+                        focusNode: _focusNodes[4],
+                        controller: _textController[4],
+                        textInputAction: TextInputAction.next,
+                        style: TextStyle(color: Colors.black),
+                        cursorColor: Colors.black,
+                        decoration: InputDecoration(
+                          labelText: "Password",
+                          filled: true,
+                          fillColor: Colors.white,
+                          contentPadding: EdgeInsets.only(left: 12),
+                          floatingLabelBehavior: FloatingLabelBehavior.never,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30),
+                            borderSide: BorderSide.none,
+                          ),
+                          suffixIcon: GestureDetector(
+                            onTap: () => _obscureText[0].value = !value,
+                            child: Icon(
+                              value ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+                              color: AppColors.textTertiary,
+                            ),
+                          ),
+                        ),
+                        onFieldSubmitted: (value) => FocusScope.of(context).requestFocus(_focusNodes[5]),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your password';
+                          }
+                          if (value.length < 8) {
+                            return 'Password must be at least 8 characters';
+                          }
+                          if (!RegExp(r'[A-Z]').hasMatch(value)) {
+                            return 'Password must contain at least one uppercase letter';
+                          }
+                          if (!RegExp(r'[0-9]').hasMatch(value)) {
+                            return 'Password must contain at least one number';
+                          }
+                          if (!RegExp(r'[!@#$%^&*(),.?":{}|<>]').hasMatch(value)) {
+                            return 'Password must contain at least one special character';
+                          }
+                          return null;
+                        },
+                      );
                     },
                   ),
                 ),
                 SizedBox(
                   height: 60,
-                  child: TextFormField(
-                    obscureText: true,
-                    controller: textController[5],
-                    style: TextStyle(color: Colors.black),
-                    decoration: InputDecoration(
-                      labelText: "Confirm your password",
-                      filled: true,
-                      fillColor: Colors.white,
-                      contentPadding: EdgeInsets.only(left: 12),
-                      floatingLabelBehavior: FloatingLabelBehavior.never,
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(30), borderSide: BorderSide.none),
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please confirm your password';
-                      }
-                      if (value != textController[4].text) {
-                        return 'Passwords do not match';
-                      }
-                      return null;
+                  child: ValueListenableBuilder(
+                    valueListenable: _obscureText[1],
+                    builder: (context, value, child) {
+                      return TextFormField(
+                        obscureText: value,
+                        focusNode: _focusNodes[5],
+                        controller: _textController[5],
+                        textInputAction: TextInputAction.done,
+                        style: TextStyle(color: Colors.black),
+                        cursorColor: Colors.black,
+                        decoration: InputDecoration(
+                          labelText: "Confirm your password",
+                          filled: true,
+                          fillColor: Colors.white,
+                          contentPadding: EdgeInsets.only(left: 12),
+                          floatingLabelBehavior: FloatingLabelBehavior.never,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30),
+                            borderSide: BorderSide.none,
+                          ),
+                          suffixIcon: GestureDetector(
+                            onTap: () => _obscureText[1].value = !value,
+                            child: Icon(
+                              value ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+                              color: AppColors.textTertiary,
+                            ),
+                          ),
+                        ),
+                        onFieldSubmitted: (value) {
+                          FocusScope.of(context).unfocus();
+                          _buttonController.start();
+                        },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please confirm your password';
+                          }
+                          if (value != _textController[4].text) {
+                            return 'Passwords do not match';
+                          }
+                          return null;
+                        },
+                      );
                     },
                   ),
                 ),
                 SizedBox(
                   width: double.infinity,
-                  child: ElevatedButton(
+                  child: RoundedLoadingButton(
+                    color: AppColors.background,
+                    controller: _buttonController,
+                    resetAfterDuration: true,
+                    resetDuration: Duration(seconds: 3),
                     onPressed: () async {
-                      final focus = FocusScope.of(context);
                       final navigator = Navigator.of(context);
-                      if (!focus.hasPrimaryFocus) {
-                        focus.unfocus();
-                      }
                       if (_formKey.currentState!.validate()) {
-                        await widget.authViewModel.signUp(textController[2].text, textController[5].text);
+                        await widget.authViewModel.signUp(_textController[2].text, _textController[5].text);
                         await widget.authViewModel.sendEmailVerification();
                         navigator.pushNamed(AppRoutes.verifyEmail);
                       }
                     },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.background,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-                    ),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 15.0),
                       child: Text("Sign Up", style: TextStyle(fontSize: 16, color: Colors.white)),

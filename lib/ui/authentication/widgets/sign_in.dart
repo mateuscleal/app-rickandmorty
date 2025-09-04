@@ -124,8 +124,8 @@ class _SignInState extends State<SignIn> {
               child: RoundedLoadingButton(
                 color: AppColors.background,
                 controller: _buttonController,
+                resetDuration: Duration(seconds: 1),
                 resetAfterDuration: true,
-                resetDuration: const Duration(seconds: 2, milliseconds: 500),
                 onPressed: () async {
                   final navigator = Navigator.of(context);
                   final snackBar = ScaffoldMessenger.of(context);

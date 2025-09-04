@@ -18,8 +18,13 @@ const Map<String, dynamic> queries = {
     }
   """,
   'getFilteredEpisodes': """
-    query (\$name: String!) {
-      episodes(filter: { name: \$name }) {
+    query (\$name: String!, \$page: Int!) {
+      episodes(page: \$page, filter: { name: \$name }) {
+        info {
+          count
+          pages
+          next
+        }
         results {
           id
           name

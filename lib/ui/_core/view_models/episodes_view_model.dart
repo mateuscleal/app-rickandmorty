@@ -3,13 +3,15 @@ import 'package:flutter/material.dart';
 import '../../../data/repositories/episode/episode_repository_impl.dart';
 
 class EpisodesViewModel extends ChangeNotifier {
-  late String _filter;
+  String _filter = '';
   int _idReference = 0;
   bool _loading = false;
   List<dynamic> _episodes = [], _favoriteEpisodes = [], _filteredEpisodes = [];
   late EpisodeRepositoryImpl _repository;
 
-  List<dynamic> get episodes => _filteredEpisodes.isEmpty ? _episodes : _filteredEpisodes;
+  List<dynamic> get episodes => _episodes;
+
+  List<dynamic> get filteredEpisodes => _filteredEpisodes;
 
   List<dynamic> get favoriteEpisodes => _favoriteEpisodes;
 
@@ -21,7 +23,6 @@ class EpisodesViewModel extends ChangeNotifier {
 
   void init(EpisodeRepositoryImpl repo) {
     _repository = repo;
-    _filter = '';
     fetchEpisodes();
     notifyListeners();
   }
@@ -50,7 +51,6 @@ class EpisodesViewModel extends ChangeNotifier {
       return false;
     }
 
-    _filter = name;
     _filteredEpisodes = await _repository.searchEpisodes(name);
     if (_filteredEpisodes.isEmpty) {
       _filter = '';
@@ -59,12 +59,21 @@ class EpisodesViewModel extends ChangeNotifier {
       return false;
     }
 
+    _filter = name;
     _loading = false;
     notifyListeners();
     return true;
   }
 
   Future<void> toggleFavorite(int episodeId) async {
+    if (_filteredEpisodes.isNotEmpty) {
+      final index = _filteredEpisodes.indexWhere((episode) => int.parse(episode.id) - 1 == episodeId);
+      if (index != -1) {
+        _filteredEpisodes[index] = _filteredEpisodes[index].copyWith(isFavorite: true);
+        notifyListeners();
+      }
+    }
+
     final index = _episodes.indexWhere((episode) => int.parse(episode.id) - 1 == episodeId);
     if (index != -1) {
       _episodes[index] = _episodes[index].copyWith(isFavorite: true);
@@ -79,6 +88,14 @@ class EpisodesViewModel extends ChangeNotifier {
   }
 
   Future<void> toggleWatched(int episodeId) async {
+    if (_filteredEpisodes.isNotEmpty) {
+      final index = _filteredEpisodes.indexWhere((episode) => int.parse(episode.id) - 1 == episodeId);
+      if (index != -1) {
+        _filteredEpisodes[index] = _filteredEpisodes[index].copyWith(isWatched: true);
+        notifyListeners();
+      }
+    }
+
     final index = _episodes.indexWhere((episode) => int.parse(episode.id) - 1 == episodeId);
     if (index != -1) {
       _episodes[index] = _episodes[index].copyWith(isWatched: true);

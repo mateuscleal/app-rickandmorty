@@ -1,9 +1,13 @@
 import 'package:hive_flutter/hive_flutter.dart';
 
-class HiveManager {
-  static const String _boxName = 'hiveManager';
+class HiveService {
+  final String? userId;
 
-  static Future<void> init() async {
+  HiveService(this.userId);
+
+  String get _boxName => 'hiveManager_$userId';
+
+  Future<void> init() async {
     await Hive.initFlutter();
     await Hive.openBox(_boxName);
   }
@@ -13,7 +17,7 @@ class HiveManager {
     return box.get(key) ?? {};
   }
 
-  static Future<void> setValue(int key, Map<String, dynamic> value) async {
+  Future<void> setValue(int key, Map<String, dynamic> value) async {
     final box = Hive.box(_boxName);
     await box.put(key, value);
   }

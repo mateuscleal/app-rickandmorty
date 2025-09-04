@@ -9,7 +9,7 @@ import 'episode_repository.dart';
 
 class EpisodeRepositoryImpl implements EpisodeRepository {
   final GraphQLService _graphqlService;
-  final HiveManager _hiveManager;
+  final HiveService _hiveManager;
 
   EpisodeRepositoryImpl(this._graphqlService, this._hiveManager);
 
@@ -56,20 +56,38 @@ class EpisodeRepositoryImpl implements EpisodeRepository {
   }
 
   @override
-  Future<List<dynamic>> searchEpisodes(String name) async {
-    final result = await _graphqlService.executeQuery(queries['getFilteredEpisodes'], variables: {'name': name});
-    final data = result.data?['episodes']['results'] ?? [];
-    return List<EpisodeModel>.from(
-      data.map((episode) {
-        final index = int.parse(episode['id']) - 1;
-        final hiveData = _hiveManager.getValue(index);
-        return EpisodeModel.fromMap(episode, hiveData);
-      }),
-    );
+  Future<List<EpisodeModel>> searchEpisodes(String name) async {
+    int page = 1;
+    List<EpisodeModel> allEpisodes = [];
+
+    do {
+      final result = await _graphqlService.executeQuery(
+        queries['getFilteredEpisodes'],
+        variables: {'name': name, 'page': page},
+      );
+
+      final episodesData = result.data?['episodes']['results'] ?? [];
+      page = result.data?['episodes']['info']['next'] ?? 0;
+
+      allEpisodes.addAll(
+        episodesData.map<EpisodeModel>((episode) {
+          final index = int.parse(episode['id']) - 1;
+          final hiveData = _hiveManager.getValue(index);
+          return EpisodeModel.fromMap(episode, hiveData);
+        }),
+      );
+
+    } while (page != 0);
+
+    return allEpisodes;
   }
 
   @override
   Future<void> updateEpisodeStatus(int episodeId, bool isFavorite, bool isWatched, String imagePath) async {
-    await HiveManager.setValue(episodeId, {'isFavorite': isFavorite, 'isWatched': isWatched, 'imagePath': imagePath});
+    await _hiveManager.setValue(episodeId, {
+      'isFavorite': isFavorite,
+      'isWatched': isWatched,
+      'imagePath': imagePath,
+    });
   }
 }

@@ -13,18 +13,28 @@ import '../ui/authentication/view_model/auth_view_model.dart';
 import '../ui/locations/view_models/locations_view_model.dart';
 
 List<SingleChildWidget> providers = [
-  /// Singleton providers for services
+  ///Providers for services
   Provider<GraphQLService>(create: (_) => GraphQLService()),
-  Provider<HiveManager>(create: (_) => HiveManager()),
   Provider<FirebaseAuthService>(create: (_) => FirebaseAuthService()),
+  ProxyProvider<FirebaseAuthService, HiveService?>(
+    update: (context, authService, _) {
+      final user = authService.currentUser;
+      if (user != null) {
+        final hiveManager = HiveService(user.uid.substring(user.uid.length - 8));
+        hiveManager.init();
+        return hiveManager;
+      }
+      return null;
+    },
+  ),
 
   /// Proxy providers for repositories
   ProxyProvider<FirebaseAuthService, AuthRepositoryImpl>(update: (context, auth, _) => AuthRepositoryImpl(auth)),
   ProxyProvider<GraphQLService, LocationRepositoryImpl>(
     update: (context, graphql, _) => LocationRepositoryImpl(graphql),
   ),
-  ProxyProvider2<GraphQLService, HiveManager, EpisodeRepositoryImpl>(
-    update: (context, graphql, hive, _) => EpisodeRepositoryImpl(graphql, hive),
+  ProxyProvider2<GraphQLService, HiveService?, EpisodeRepositoryImpl>(
+    update: (context, graphql, hive, _) => EpisodeRepositoryImpl(graphql, hive ?? HiveService('')),
   ),
 
   /// Change notifiers for view models

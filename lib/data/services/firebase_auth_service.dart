@@ -25,10 +25,6 @@ class FirebaseAuthService {
     }
   }
 
-  Future<void> signOut() async => _auth.signOut();
-
-  Stream<User?> authStateChanges() => _auth.authStateChanges();
-
   Future<void> sendEmailVerification() async {
     try {
       final user = _auth.currentUser;
@@ -43,10 +39,8 @@ class FirebaseAuthService {
 
   Future<bool> isEmailVerified() async {
     try {
-      final user = _auth.currentUser;
-      if (user == null) return false;
-
-      await user.reload();
+      if (_auth.currentUser == null) return false;
+      await _auth.currentUser!.reload();
       return _auth.currentUser?.emailVerified ?? false;
     } on FirebaseAuthException catch (e) {
       debugPrint(FirebaseAuthException(code: e.code, message: e.message).toString());
@@ -65,9 +59,8 @@ class FirebaseAuthService {
 
   Future<bool> reloadUser() async {
     try {
-      final User? user = _auth.currentUser;
-      if (user != null) {
-        await user.reload();
+      if (_auth.currentUser != null) {
+        await _auth.currentUser!.reload();
         return true;
       }
       return false;
@@ -76,4 +69,10 @@ class FirebaseAuthService {
       return false;
     }
   }
+
+  User? get currentUser => _auth.currentUser;
+
+  Future<void> signOut() async => _auth.signOut();
+
+  Stream<User?> authStateChanges() => _auth.authStateChanges();
 }

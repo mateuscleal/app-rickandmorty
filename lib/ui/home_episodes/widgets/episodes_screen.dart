@@ -38,12 +38,20 @@ class EpisodesScreen extends StatelessWidget {
             ),
             Expanded(
               child: ListView.builder(
-                itemCount: viewModel.episodes.length + 1,
+                itemCount: viewModel.filter.isNotEmpty
+                    ? viewModel.filteredEpisodes.length + 1
+                    : viewModel.episodes.length + 1,
                 itemBuilder: (context, index) {
-                  if (index == viewModel.episodes.length) {
+                  int length = viewModel.filter.isNotEmpty
+                      ? viewModel.filteredEpisodes.length
+                      : viewModel.episodes.length;
+
+                  if (index == length) {
                     return SizedBox(height: 100);
                   }
-                  final EpisodeModel episode = viewModel.episodes[index];
+                  final EpisodeModel episode = viewModel.filter.isNotEmpty
+                      ? viewModel.filteredEpisodes[index]
+                      : viewModel.episodes[index];
                   return GestureDetector(
                     onTap: () {
                       viewModel.setReference(int.parse(episode.id) - 1);

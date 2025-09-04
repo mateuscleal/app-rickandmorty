@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import '../../../data/repositories/authentication/auth_repository.dart';
 import '../../../domain/models/user.dart';
 
-enum AuthMode {signUp, signIn}
+enum AuthMode { signUp, signIn }
 
 class AuthViewModel extends ChangeNotifier {
   AuthRepository? _repo;
@@ -12,8 +12,11 @@ class AuthViewModel extends ChangeNotifier {
   bool _isLoading = false, _isVerified = false;
 
   UserModel? get currentUser => _currentUser;
+
   bool get isLoading => _isLoading;
+
   bool get isVerified => _isVerified;
+
   bool get isSignIn => _authMode == AuthMode.signIn;
 
   void init(AuthRepository repo) {
@@ -27,16 +30,10 @@ class AuthViewModel extends ChangeNotifier {
     _isLoading = false;
     notifyListeners();
     if (user == null) {
-      return {
-        'user': false,
-        'verified': false,
-      };
+      return {'user': false, 'verified': false};
     }
     final verified = await _repo!.isEmailVerified();
-    return {
-      'user': true,
-      'verified': verified,
-    };
+    return {'user': true, 'verified': verified};
   }
 
   Future<void> signUp(String email, String password) async {
@@ -46,8 +43,6 @@ class AuthViewModel extends ChangeNotifier {
     _isLoading = false;
     notifyListeners();
   }
-
-  Future<void> signOut() async => _repo!.signOut();
 
   Future<void> sendEmailVerification() async {
     await _repo!.sendEmailVerification();
@@ -59,10 +54,21 @@ class AuthViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<bool> checkIfEmailExists(String email) async {
+    return await _repo!.checkIfEmailExists(email);
+  }
+
+  Future<void> sendPasswordResetEmail(String email) async {
+    await _repo!.sendPasswordResetEmail(email);
+    notifyListeners();
+  }
+
   Future<void> reloadUser() async {
     await _repo!.reloadUser();
     notifyListeners();
   }
+
+  Future<void> signOut() async => _repo!.signOut();
 
   void toggleAuthMode() {
     _authMode = (_authMode == AuthMode.signIn) ? AuthMode.signUp : AuthMode.signIn;

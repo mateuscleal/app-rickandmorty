@@ -189,7 +189,7 @@ class _SignUpState extends State<SignUp> {
                           suffixIcon: GestureDetector(
                             onTap: () => _obscureText[0].value = !value,
                             child: Icon(
-                              value ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+                              !value ? Icons.visibility_off_outlined : Icons.visibility_outlined,
                               color: AppColors.textTertiary,
                             ),
                           ),
@@ -242,7 +242,7 @@ class _SignUpState extends State<SignUp> {
                           suffixIcon: GestureDetector(
                             onTap: () => _obscureText[1].value = !value,
                             child: Icon(
-                              value ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+                              !value ? Icons.visibility_off_outlined : Icons.visibility_outlined,
                               color: AppColors.textTertiary,
                             ),
                           ),

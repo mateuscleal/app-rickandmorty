@@ -9,9 +9,7 @@ class EpisodesViewModel extends ChangeNotifier {
   List<dynamic> _episodes = [], _favoriteEpisodes = [], _filteredEpisodes = [];
   late EpisodeRepositoryImpl _repository;
 
-  List<dynamic> get episodes => _episodes;
-
-  List<dynamic> get filteredEpisodes => _filteredEpisodes;
+  List<dynamic> get episodes => _filteredEpisodes.isEmpty ? _episodes : _filteredEpisodes;
 
   List<dynamic> get favoriteEpisodes => _favoriteEpisodes;
 
@@ -74,17 +72,14 @@ class EpisodesViewModel extends ChangeNotifier {
       }
     }
 
-    final index = _episodes.indexWhere((episode) => int.parse(episode.id) - 1 == episodeId);
-    if (index != -1) {
-      _episodes[index] = _episodes[index].copyWith(isFavorite: true);
-      await _repository.updateEpisodeStatus(
-        episodeId,
-        _episodes[index].isFavorite,
-        _episodes[index].isWatched,
-        _episodes[index].imagePath,
-      );
-      notifyListeners();
-    }
+    _episodes[episodeId] = _episodes[episodeId].copyWith(isFavorite: true);
+    await _repository.updateEpisodeStatus(
+      episodeId,
+      _episodes[episodeId].isFavorite,
+      _episodes[episodeId].isWatched,
+      _episodes[episodeId].imagePath,
+    );
+    notifyListeners();
   }
 
   Future<void> toggleWatched(int episodeId) async {
@@ -96,17 +91,14 @@ class EpisodesViewModel extends ChangeNotifier {
       }
     }
 
-    final index = _episodes.indexWhere((episode) => int.parse(episode.id) - 1 == episodeId);
-    if (index != -1) {
-      _episodes[index] = _episodes[index].copyWith(isWatched: true);
-      await _repository.updateEpisodeStatus(
-        episodeId,
-        _episodes[index].isFavorite,
-        _episodes[index].isWatched,
-        _episodes[index].imagePath,
-      );
-      notifyListeners();
-    }
+    _episodes[episodeId] = _episodes[episodeId].copyWith(isWatched: true);
+    await _repository.updateEpisodeStatus(
+      episodeId,
+      _episodes[episodeId].isFavorite,
+      _episodes[episodeId].isWatched,
+      _episodes[episodeId].imagePath,
+    );
+    notifyListeners();
   }
 
   Future<void> getFavoriteEpisodes() async {

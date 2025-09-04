@@ -1,4 +1,6 @@
 import 'package:app/ui/_core/theme/app_colors.dart';
+import 'package:app/ui/_core/widgets/show_alert_dialogs.dart';
+import 'package:app/ui/_core/widgets/show_snack_bars.dart';
 import 'package:app/ui/authentication/view_model/auth_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:rounded_loading_button_plus/rounded_loading_button.dart';
@@ -17,6 +19,8 @@ class SignIn extends StatefulWidget {
 class _SignInState extends State<SignIn> {
   /// Variables
   final _formKey = GlobalKey<FormState>();
+  final _showSnackBars = ShowSnackBars();
+  final _showAlertDialog = ShowAlertDialogs();
   final _focusNodes = List.generate(2, (index) => FocusNode());
   final _obscureText = List.generate(2, (index) => ValueNotifier<bool>(true));
 
@@ -90,7 +94,7 @@ class _SignInState extends State<SignIn> {
                       suffixIcon: GestureDetector(
                         onTap: () => _obscureText[0].value = !value,
                         child: Icon(
-                          value ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+                          !value ? Icons.visibility_off_outlined : Icons.visibility_outlined,
                           color: Colors.black,
                         ),
                       ),
@@ -111,11 +115,19 @@ class _SignInState extends State<SignIn> {
             ),
             Padding(
               padding: EdgeInsets.only(right: 10, bottom: 10),
-              child: Align(
-                alignment: Alignment.topRight,
-                child: Text(
-                  "I forgot my password",
-                  style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.textTertiary, fontSize: 14),
+              child: GestureDetector(
+                onTap: () => _showAlertDialog.showAlertDialogPasswordReset(
+                  context: context,
+                  formKey: GlobalKey<FormState>(),
+                  emailController: TextEditingController(),
+                  authViewModel: widget.authViewModel,
+                ),
+                child: Align(
+                  alignment: Alignment.topRight,
+                  child: Text(
+                    "I forgot my password",
+                    style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.textTertiary, fontSize: 14),
+                  ),
                 ),
               ),
             ),
@@ -124,11 +136,10 @@ class _SignInState extends State<SignIn> {
               child: RoundedLoadingButton(
                 color: AppColors.background,
                 controller: _buttonController,
-                resetDuration: Duration(seconds: 1),
+                resetDuration: Duration(seconds: 2),
                 resetAfterDuration: true,
                 onPressed: () async {
                   final navigator = Navigator.of(context);
-                  final snackBar = ScaffoldMessenger.of(context);
                   if (_formKey.currentState!.validate()) {
                     final userData = await widget.authViewModel.signIn(
                       _textController[0].text,
@@ -143,17 +154,8 @@ class _SignInState extends State<SignIn> {
                       _buttonController.reset();
                     } else {
                       _buttonController.error();
-                      snackBar.clearSnackBars();
-                      snackBar.showSnackBar(
-                        SnackBar(
-                          backgroundColor: Colors.red,
-                          content: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 8),
-                            child: Text('E-mail ou senha incorretos'),
-                          ),
-                          duration: Duration(seconds: 2),
-                        ),
-                      );
+                      // ignore: use_build_context_synchronously
+                      _showSnackBars.authenticationSignIn(context);
                     }
                   } else {
                     _buttonController.error();

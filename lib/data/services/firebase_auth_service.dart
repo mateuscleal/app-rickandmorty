@@ -48,6 +48,22 @@ class FirebaseAuthService {
     }
   }
 
+  Future<bool> checkIfEmailExists(String email) async {
+    try {
+      await _auth.signInWithEmailAndPassword(
+        email: email,
+        password: "********",
+      );
+      return true;
+    } on FirebaseAuthException catch (e) {
+      if (e.code == "wrong-password") {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
+
   Future<void> sendPasswordResetEmail(String email) async {
     try {
       await _auth.sendPasswordResetEmail(email: email);

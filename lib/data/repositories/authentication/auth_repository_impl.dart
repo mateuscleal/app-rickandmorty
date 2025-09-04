@@ -21,7 +21,16 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<void> signOut() => _service.signOut();
+  Future<void> sendEmailVerification() async => await _service.sendEmailVerification();
+
+  @override
+  Future<bool> isEmailVerified() async => await _service.isEmailVerified();
+
+  @override
+  Future<bool> checkIfEmailExists(String email) async => await _service.checkIfEmailExists(email);
+
+  @override
+  Future<void> sendPasswordResetEmail(String email) async => await _service.sendPasswordResetEmail(email);
 
   @override
   Stream<UserModel?> authStateChanges() {
@@ -31,11 +40,8 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<void> sendEmailVerification() async => await _service.sendEmailVerification();
-
-  @override
-  Future<bool> isEmailVerified() async => await _service.isEmailVerified();
-
-  @override
   Future<bool> reloadUser() async => await _service.reloadUser();
+
+  @override
+  Future<void> signOut() => _service.signOut();
 }

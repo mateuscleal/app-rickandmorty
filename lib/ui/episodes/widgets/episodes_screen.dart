@@ -1,6 +1,6 @@
 import 'package:app/routing/app_routes.dart';
 import 'package:app/ui/_core/view_models/episodes_view_model.dart';
-import 'package:app/ui/home_episodes/widgets/episode_card.dart';
+import 'package:app/ui/episodes/widgets/episode_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

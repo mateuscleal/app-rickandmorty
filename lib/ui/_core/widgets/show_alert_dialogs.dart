@@ -71,6 +71,8 @@ class ShowAlertDialogs {
                     width: 100,
                     child: TextButton(
                       onPressed: () async {
+                        final focusScope = FocusScope.of(context);
+                        focusScope.unfocus();
                         if (formKey.currentState!.validate()) {
                           final email = emailController.text.trim();
                           final navigator = Navigator.of(context);

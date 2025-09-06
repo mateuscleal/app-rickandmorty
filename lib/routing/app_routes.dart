@@ -1,5 +1,5 @@
 import 'package:app/ui/authentication/widgets/authentication_screen.dart';
-import 'package:app/ui/home_episodes/widgets/episode_details_screen.dart';
+import 'package:app/ui/episodes/widgets/episode_details_screen.dart';
 import 'package:app/ui/locations/widgets/locations_residents_screen.dart';
 import 'package:app/ui/main_scaffold/widgets/main_scaffold_screen.dart';
 import 'package:app/ui/splash/widgets/splash_screen.dart';

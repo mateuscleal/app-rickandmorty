@@ -16,9 +16,10 @@ class EpisodeRepositoryImpl implements EpisodeRepository {
   @override
   Future<List<dynamic>> fetchAllEpisodes() async {
     try {
-      final List<dynamic> list = List.generate(51, (i) => i + 1);
-
-      final result = await _graphqlService.executeQuery(queries['getEpisodesByIds'], variables: {'ids': list});
+      final result = await _graphqlService.executeQuery(
+        queries['getEpisodesByIds'],
+        variables: {'ids': List.generate(51, (i) => i + 1)},
+      );
       if (result.hasException) {
         throw result.exception!;
       }
@@ -76,7 +77,6 @@ class EpisodeRepositoryImpl implements EpisodeRepository {
           return EpisodeModel.fromMap(episode, hiveData);
         }),
       );
-
     } while (page != 0);
 
     return allEpisodes;

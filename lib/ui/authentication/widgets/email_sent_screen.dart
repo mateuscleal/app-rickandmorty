@@ -1,4 +1,5 @@
 import 'package:app/routing/app_routes.dart';
+import 'package:app/ui/authentication/widgets/step_item_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
@@ -39,9 +40,32 @@ class _EmailSentScreenState extends State<EmailSentScreen> {
                 'assets/json/email_animation_rm.json',
                 width: 200,
                 height: 200,
-                options: LottieOptions(enableMergePaths: true),
               ),
-              Text('Verifique seu e-mail para continuar', style: TextStyle(fontSize: 18), textAlign: TextAlign.center),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: const [
+                    StepItemWidget(
+                      number: 1,
+                      title: 'Cheque seu e-mail',
+                      subtitle: 'Abra a caixa de entrada e procure o\ne-mail de verificação.',
+                    ),
+                    SizedBox(height: 12),
+                    StepItemWidget(
+                      number: 2,
+                      title: 'Clique no link de verificação',
+                      subtitle: 'O link confirma seu e-mail automaticamente.',
+                    ),
+                    SizedBox(height: 12),
+                    StepItemWidget(
+                      number: 3,
+                      title: 'Volte aqui para continuar',
+                      subtitle: 'Ao confirmar, toque em "Verificar agora" no app.',
+                    ),
+                  ],
+                ),
+              ),
               SizedBox(
                 width: double.infinity,
                 child: RoundedLoadingButton(
@@ -68,7 +92,7 @@ class _EmailSentScreenState extends State<EmailSentScreen> {
                       );
                     }
                   },
-                  child: Text("Verificar"),
+                  child: Text("Verificar agora"),
                 ),
               ),
             ],

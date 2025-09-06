@@ -1,5 +1,5 @@
 import 'package:app/ui/favorites/widgets/favorites_screen.dart';
-import 'package:app/ui/home_episodes/widgets/episodes_screen.dart';
+import 'package:app/ui/episodes/widgets/episodes_screen.dart';
 import 'package:app/ui/locations/widgets/locations_screen.dart';
 import 'package:flutter/material.dart';
 

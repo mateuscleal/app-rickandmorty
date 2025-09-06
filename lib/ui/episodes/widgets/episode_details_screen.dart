@@ -1,6 +1,6 @@
 import 'package:app/ui/_core/theme/app_colors.dart';
 import 'package:app/ui/_core/view_models/episodes_view_model.dart';
-import 'package:app/ui/home_episodes/widgets/character_card.dart';
+import 'package:app/ui/episodes/widgets/character_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

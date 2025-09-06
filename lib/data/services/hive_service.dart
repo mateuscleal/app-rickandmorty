@@ -21,4 +21,9 @@ class HiveService {
     final box = Hive.box(_boxName);
     await box.put(key, value);
   }
+
+  Future<void> close() async {
+    final box = Hive.box(_boxName);
+    await box.close();
+  }
 }

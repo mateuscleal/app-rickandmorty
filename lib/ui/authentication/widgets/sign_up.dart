@@ -276,7 +276,9 @@ class _SignUpState extends State<SignUp> {
                       if (_formKey.currentState!.validate()) {
                         await widget.authViewModel.signUp(_textController[2].text, _textController[5].text);
                         await widget.authViewModel.sendEmailVerification();
-                        navigator.pushNamed(AppRoutes.verifyEmail);
+                        await navigator.pushNamed(AppRoutes.verifyEmail);
+                        widget.authViewModel.toggleAuthMode();
+                        cleanTextFields();
                       }
                     },
                     child: Padding(
@@ -291,5 +293,12 @@ class _SignUpState extends State<SignUp> {
         ),
       ),
     );
+  }
+
+  void cleanTextFields() {
+    for (int i = 0; i < 6; i++) {
+      _textController[i].clear();
+      _focusNodes[i].unfocus();
+    }
   }
 }

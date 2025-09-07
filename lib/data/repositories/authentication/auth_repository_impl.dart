@@ -11,13 +11,13 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<UserModel?> signIn(String email, String password) async {
     final user = await _service.signIn(email, password);
-    return user != null ? UserModel(id: user.uid, email: user.email!) : null;
+    return user != null ? UserModel(id: user.uid, email: user.email!, emailVerified: user.emailVerified) : null;
   }
 
   @override
   Future<UserModel?> signUp(String email, String password) async {
     final user = await _service.signUp(email, password);
-    return user != null ? UserModel(id: user.uid, email: user.email!) : null;
+    return user != null ? UserModel(id: user.uid, email: user.email!, emailVerified: user.emailVerified) : null;
   }
 
   @override
@@ -31,13 +31,6 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<void> sendPasswordResetEmail(String email) async => await _service.sendPasswordResetEmail(email);
-
-  @override
-  Stream<UserModel?> authStateChanges() {
-    return _service.authStateChanges().map(
-      (user) => user != null ? UserModel(id: user.uid, email: user.email!, displayName: user.displayName) : null,
-    );
-  }
 
   @override
   Future<bool> reloadUser() async => await _service.reloadUser();

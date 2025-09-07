@@ -23,7 +23,6 @@ class HiveService {
   }
 
   Future<void> close() async {
-    final box = Hive.box(_boxName);
-    await box.close();
+    await Hive.close();
   }
 }

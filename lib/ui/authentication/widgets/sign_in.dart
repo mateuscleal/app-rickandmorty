@@ -136,19 +136,20 @@ class _SignInState extends State<SignIn> {
               child: RoundedLoadingButton(
                 color: AppColors.background,
                 controller: _buttonController,
-                resetDuration: Duration(seconds: 2),
                 resetAfterDuration: true,
+                resetDuration: Duration(seconds: 2),
+                completionDuration: Duration(milliseconds: 500),
                 onPressed: () async {
                   final navigator = Navigator.of(context);
                   if (_formKey.currentState!.validate()) {
-                    final userData = await widget.authViewModel.signIn(
+                    final userModel = await widget.authViewModel.signIn(
                       _textController[0].text,
                       _textController[1].text,
                     );
-                    if (userData['user'] && userData['verified']) {
+                    if (userModel != null && userModel.emailVerified) {
                       _buttonController.success();
                       navigator.pushNamedAndRemoveUntil(AppRoutes.mainScaffold, (route) => false);
-                    } else if (userData['user'] && !userData['verified']) {
+                    } else if (userModel != null && !userModel.emailVerified) {
                       _buttonController.success();
                       await navigator.pushNamed(AppRoutes.verifyEmail);
                       _buttonController.reset();

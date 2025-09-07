@@ -4,7 +4,8 @@ import 'package:app/ui/locations/widgets/locations_residents_screen.dart';
 import 'package:app/ui/main_scaffold/widgets/main_scaffold_screen.dart';
 import 'package:app/ui/splash/widgets/splash_screen.dart';
 import 'package:flutter/material.dart';
-
+import 'package:provider/provider.dart';
+import '../config/dependencies.dart';
 import '../ui/authentication/widgets/email_sent_screen.dart';
 
 class AppRoutes {
@@ -17,10 +18,10 @@ class AppRoutes {
 
   static Map<String, WidgetBuilder> routes = {
     splash: (_) => const SplashScreen(),
-    authentication: (_) => AuthenticationScreen(),
+    authentication: (_) => const AuthenticationScreen(),
     verifyEmail: (_) => EmailSentScreen(),
     episodeDetails: (_) => const EpisodeDetailsScreen(),
     locationsResidents: (_) => const LocationsResidentsScreen(),
-    mainScaffold: (_) => MainScaffoldScreen(),
+    mainScaffold: (_) => MultiProvider(providers: providers, child: MainScaffoldScreen()),
   };
 }

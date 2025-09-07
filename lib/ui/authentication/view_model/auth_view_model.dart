@@ -23,17 +23,13 @@ class AuthViewModel extends ChangeNotifier {
     _repo ??= repo;
   }
 
-  Future<Map<String, dynamic>> signIn(String email, String password) async {
+  Future<UserModel?> signIn(String email, String password) async {
     _isLoading = true;
     notifyListeners();
-    final user = await _repo!.signIn(email, password);
+    _currentUser = await _repo!.signIn(email, password);
     _isLoading = false;
     notifyListeners();
-    if (user == null) {
-      return {'user': false, 'verified': false};
-    }
-    final verified = await _repo!.isEmailVerified();
-    return {'user': true, 'verified': verified};
+    return currentUser;
   }
 
   Future<void> signUp(String email, String password) async {

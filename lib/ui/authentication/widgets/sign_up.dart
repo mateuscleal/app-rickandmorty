@@ -271,6 +271,7 @@ class _SignUpState extends State<SignUp> {
                     controller: _buttonController,
                     resetAfterDuration: true,
                     resetDuration: Duration(seconds: 3),
+                    completionDuration: Duration(milliseconds: 500),
                     onPressed: () async {
                       final navigator = Navigator.of(context);
                       if (_formKey.currentState!.validate()) {
@@ -278,7 +279,7 @@ class _SignUpState extends State<SignUp> {
                         await widget.authViewModel.sendEmailVerification();
                         await navigator.pushNamed(AppRoutes.verifyEmail);
                         widget.authViewModel.toggleAuthMode();
-                        cleanTextFields();
+                        _cleanTextFields();
                       }
                     },
                     child: Padding(
@@ -295,7 +296,7 @@ class _SignUpState extends State<SignUp> {
     );
   }
 
-  void cleanTextFields() {
+  void _cleanTextFields() {
     for (int i = 0; i < 6; i++) {
       _textController[i].clear();
       _focusNodes[i].unfocus();

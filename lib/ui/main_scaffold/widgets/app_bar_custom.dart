@@ -1,4 +1,3 @@
-import 'package:app/data/services/firebase_auth_service.dart';
 import 'package:app/ui/_core/theme/app_colors.dart';
 import 'package:app/ui/main_scaffold/view_models/main_scaffold_view_model.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../../../data/services/hive_service.dart';
 import '../../../routing/app_routes.dart';
+import '../../authentication/view_model/auth_view_model.dart';
 
 class AppBarCustom extends StatefulWidget implements PreferredSizeWidget {
   final MainScaffoldViewModel viewModel;
@@ -22,7 +22,6 @@ class AppBarCustom extends StatefulWidget implements PreferredSizeWidget {
 
 class _AppBarCustomState extends State<AppBarCustom> {
   final _focusNode = FocusNode();
-  final FirebaseAuthService _authService = FirebaseAuthService();
   final TextEditingController _controller = TextEditingController();
 
   @override
@@ -42,11 +41,10 @@ class _AppBarCustomState extends State<AppBarCustom> {
           onPressed: () async {
             final navigator = Navigator.of(context);
             final hive = context.read<HiveService?>();
-
+            final auth = context.read<AuthViewModel?>();
 
             await hive?.close();
-            await _authService.signOut();
-
+            await auth?.signOut();
             await navigator.pushNamedAndRemoveUntil(AppRoutes.splash, (route) => false);
           },
         ),

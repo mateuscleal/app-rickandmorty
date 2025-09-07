@@ -28,12 +28,16 @@ Este é um aplicativo Flutter desenvolvido para gerenciar informações dos epis
 - **Lista de Favoritos**
     - Visualize rapidamente os episódios marcados como favoritos.
 
+- **Autenticação de Usuário**
+    - Login e gerenciamento de usuários utilizando **Firebase Authentication**.
+
 ---
 
 ## Tecnologias Utilizadas
 
 - **Flutter**: Framework principal para o desenvolvimento do app.
-- **GraphQL**: Para consumo da API de dados (https://rickandmortyapi.com/graphql).
+- **Firebase Authentication**: Para gerenciar o login e autenticação dos usuários.
+- **GraphQL**: Para consumo da API de dados ([Rick and Morty API](https://rickandmortyapi.com/graphql)).
 - **Hive**: Para persistência local de dados como favoritos e episódios vistos.
 - **Provider**: Gerenciamento de estado.
 
@@ -43,7 +47,7 @@ Este é um aplicativo Flutter desenvolvido para gerenciar informações dos epis
 
 Para reproduzir ou trabalhar neste projeto, é necessário ter o seguinte ambiente configurado:
 
-- **Gradle**: Versão 8.12.2.
-- **Android Studio**: Narwhal Feature Drop | 2025.1.2 Patch 2
-- **Flutter**: Versão utilizada no projeto, **3.32.5**
-- **Dart SDK**: Versão utilizada no projeto, **3.8.1**
+- **Gradle**: Versão 8.13.0.
+- **Android Studio**: Narwhal 3 Feature Drop | 2025.1.3
+- **Flutter**: Versão utilizada no projeto, **3.35.2**
+- **Dart SDK**: Versão utilizada no projeto, **3.9.0**

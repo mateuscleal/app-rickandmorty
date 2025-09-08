@@ -48,8 +48,7 @@ class EpisodesScreen extends StatelessWidget {
                   final EpisodeModel episode = viewModel.episodes[index];
                   return GestureDetector(
                     onTap: () {
-                      viewModel.setReference(int.parse(episode.id) - 1);
-                      Navigator.of(context).pushNamed(AppRoutes.episodeDetails);
+                      Navigator.of(context).pushNamed(AppRoutes.episodeDetails, arguments: episode);
                     },
                     child: EpisodeCard(
                       episode: episode,

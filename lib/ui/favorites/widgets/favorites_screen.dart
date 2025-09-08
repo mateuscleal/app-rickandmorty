@@ -37,8 +37,7 @@ class FavoritesScreen extends StatelessWidget {
                     final episode = viewModel.favoriteEpisodes[index] as EpisodeModel;
                     return GestureDetector(
                       onTap: () {
-                        viewModel.setReference(int.parse(episode.id) - 1);
-                        Navigator.of(context).pushNamed(AppRoutes.episodeDetails);
+                        Navigator.of(context).pushNamed(AppRoutes.episodeDetails, arguments: episode);
                       },
                       child: SimpleEpisodeCard(episode: episode),
                     );

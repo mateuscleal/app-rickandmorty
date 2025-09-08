@@ -38,8 +38,7 @@ class LocationsScreen extends StatelessWidget {
                   final location = LocationModel.fromMap(viewModel.locations[index]);
                   return GestureDetector(
                     onTap: () {
-                      viewModel.setReference(int.parse(location.id) - 1);
-                      Navigator.of(context).pushNamed(AppRoutes.locationsResidents);
+                      Navigator.of(context).pushNamed(AppRoutes.locationsResidents, arguments: location);
                     },
                     child: LocationCard(location: location),
                   );

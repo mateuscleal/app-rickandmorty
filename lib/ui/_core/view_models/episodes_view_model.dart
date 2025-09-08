@@ -4,7 +4,6 @@ import '../../../data/repositories/episode/episode_repository_impl.dart';
 
 class EpisodesViewModel extends ChangeNotifier {
   String _filter = '';
-  int _idReference = 0;
   bool _loading = false;
   List<dynamic> _episodes = [], _favoriteEpisodes = [], _filteredEpisodes = [];
   late EpisodeRepositoryImpl _repository;
@@ -17,16 +16,9 @@ class EpisodesViewModel extends ChangeNotifier {
 
   String get filter => _filter;
 
-  int get idReference => _idReference;
-
   void init(EpisodeRepositoryImpl repo) {
     _repository = repo;
     fetchEpisodes();
-    notifyListeners();
-  }
-
-  void setReference(int id) {
-    _idReference = id;
     notifyListeners();
   }
 

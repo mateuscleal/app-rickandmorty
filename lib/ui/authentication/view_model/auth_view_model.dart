@@ -64,6 +64,11 @@ class AuthViewModel extends ChangeNotifier {
 
   Future<void> signOut() async => await _usecases.signOut();
 
+  void setCurrentUser(UserModel user) {
+    _currentUser = user;
+    notifyListeners();
+  }
+
   void toggleAuthMode() {
     _authMode = (_authMode == AuthMode.signIn) ? AuthMode.signUp : AuthMode.signIn;
     notifyListeners();

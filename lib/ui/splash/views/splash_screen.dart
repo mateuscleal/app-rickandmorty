@@ -1,10 +1,14 @@
 import 'dart:async';
 
+import 'package:app/data/model/user_dto.dart';
 import 'package:app/data/services/firebase_auth_service.dart';
 import 'package:app/routing/app_routes.dart';
 import 'package:app/ui/_core/theme/app_colors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../authentication/view_model/auth_view_model.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -37,10 +41,19 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<void> _handleNavigation() async {
     final User? user = _firebaseAuthService.currentUser;
+    final auth = context.read<AuthViewModel?>();
 
     if (user == null || !user.emailVerified) {
       Navigator.of(context).pushReplacementNamed(AppRoutes.authentication);
     } else {
+      auth?.setCurrentUser(
+        UserDto.fromMap({
+          'id': user.uid,
+          'email': user.email!,
+          'emailVerified': user.emailVerified,
+          'displayName': user.displayName ?? '',
+        }).toDomain(),
+      );
       Navigator.of(context).pushReplacementNamed(AppRoutes.mainScaffold);
     }
   }
@@ -57,7 +70,9 @@ class _SplashScreenState extends State<SplashScreen> {
             Container(
               width: 300,
               height: 100,
-              decoration: BoxDecoration(image: DecorationImage(image: AssetImage('assets/images/logo_rm_home.png'))),
+              decoration: BoxDecoration(
+                image: DecorationImage(image: AssetImage('assets/images/logo_rm_home.png')),
+              ),
             ),
             SizedBox(
               width: 250,

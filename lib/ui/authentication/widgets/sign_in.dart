@@ -5,7 +5,7 @@ import 'package:rounded_loading_button_plus/rounded_loading_button.dart';
 
 import '../../../routing/app_routes.dart';
 import '../../_core/widgets/show_dialogs/show_dialog_password_reset.dart';
-import '../../_core/widgets/show_snack_bar/authentication_sign_in.dart';
+import '../../_core/widgets/show_snack_bar/auth_sign_in_snack_bar.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({super.key, required this.authViewModel});
@@ -157,7 +157,7 @@ class _SignInState extends State<SignIn> {
                     } else {
                       _buttonController.error();
                       if (context.mounted) {
-                        authenticationSignIn(context);
+                        authSignInSnackBar(context);
                       }
                     }
                   } else {

@@ -39,13 +39,13 @@ void showAlertDialogLogout({
                 const SizedBox(height: 12),
 
                 Text(
-                  user?.displayName ?? "Usuário",
+                  user?.displayName ?? "User",
                   style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
                 ),
 
                 const SizedBox(height: 10),
                 const Text(
-                  "Deseja realmente sair?",
+                  "Do you really want to log out?",
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 16, color: AppColors.textPrimary),
                 ),
@@ -70,7 +70,7 @@ void showAlertDialogLogout({
                     width: 100,
                     child: TextButton(
                       onPressed: () => Navigator.of(context).pop(),
-                      child: const Text("Cancelar", style: TextStyle(fontSize: 16)),
+                      child: const Text("Cancel", style: TextStyle(fontSize: 16)),
                     ),
                   ),
                   const SizedBox(height: 30, child: VerticalDivider(color: Colors.grey, thickness: 1)),
@@ -83,7 +83,7 @@ void showAlertDialogLogout({
                         await hive.close();
                         await navigator.pushNamedAndRemoveUntil(AppRoutes.splash, (route) => false);
                       },
-                      child: const Text("Sair", style: TextStyle(fontSize: 16)),
+                      child: const Text("Log out", style: TextStyle(fontSize: 16)),
                     ),
                   ),
                 ],

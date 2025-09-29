@@ -1,7 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 
 class FirebaseAuthService {
+  final logger = Logger();
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   Future<User?> signIn(String email, String password) async {
@@ -9,7 +10,7 @@ class FirebaseAuthService {
       final result = await _auth.signInWithEmailAndPassword(email: email, password: password);
       return result.user;
     } on FirebaseAuthException catch (e) {
-      debugPrint(FirebaseAuthException(code: e.code, message: e.message).toString());
+      logger.e(FirebaseAuthException(code: e.code, message: e.message));
       return null;
     }
   }
@@ -20,7 +21,7 @@ class FirebaseAuthService {
 
       return result.user;
     } on FirebaseAuthException catch (e) {
-      debugPrint(FirebaseAuthException(code: e.code, message: e.message).toString());
+      logger.e(FirebaseAuthException(code: e.code, message: e.message));
       return null;
     }
   }
@@ -32,7 +33,7 @@ class FirebaseAuthService {
         await user.sendEmailVerification();
       }
     } on FirebaseAuthException catch (e) {
-      debugPrint(FirebaseAuthException(code: e.code, message: e.message).toString());
+      logger.e(FirebaseAuthException(code: e.code, message: e.message));
       return;
     }
   }
@@ -43,7 +44,7 @@ class FirebaseAuthService {
       await _auth.currentUser!.reload();
       return _auth.currentUser?.emailVerified ?? false;
     } on FirebaseAuthException catch (e) {
-      debugPrint(FirebaseAuthException(code: e.code, message: e.message).toString());
+      logger.e(FirebaseAuthException(code: e.code, message: e.message));
       return false;
     }
   }
@@ -52,10 +53,11 @@ class FirebaseAuthService {
     try {
       await _auth.signInWithEmailAndPassword(
         email: email,
-        password: "********",
+        password: "3#Dr5q9jBtFMcXV",
       );
       return true;
     } on FirebaseAuthException catch (e) {
+      logger.e(FirebaseAuthException(code: e.code, message: e.message));
       if (e.code == "wrong-password") {
         return true;
       } else {
@@ -68,7 +70,7 @@ class FirebaseAuthService {
     try {
       await _auth.sendPasswordResetEmail(email: email);
     } on FirebaseAuthException catch (e) {
-      debugPrint(FirebaseAuthException(code: e.code, message: e.message).toString());
+      logger.e(FirebaseAuthException(code: e.code, message: e.message));
       return;
     }
   }
@@ -81,7 +83,7 @@ class FirebaseAuthService {
       }
       return false;
     } on FirebaseAuthException catch (e) {
-      debugPrint(FirebaseAuthException(code: e.code, message: e.message).toString());
+      logger.e(FirebaseAuthException(code: e.code, message: e.message));
       return false;
     }
   }

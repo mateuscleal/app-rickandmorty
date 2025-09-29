@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../authentication/view_model/auth_view_model.dart';
-import '../show_snack_bar/authentication_password_reset.dart';
+import '../show_snack_bar/auth_password_reset_snack_bar.dart';
 
 void showAlertDialogPasswordReset({
   required BuildContext context,
@@ -14,7 +14,7 @@ void showAlertDialogPasswordReset({
     builder: (context) {
       return AlertDialog(
         contentPadding: EdgeInsets.symmetric(vertical: 40, horizontal: 10),
-        title: const Text("Esqueci minha senha"),
+        title: const Text("I forgot my password"),
         content: Form(
           key: formKey,
           child: TextFormField(
@@ -32,10 +32,10 @@ void showAlertDialogPasswordReset({
             keyboardType: TextInputType.emailAddress,
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return "Informe um e-mail";
+                return "Please enter your email";
               }
               if (!RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$').hasMatch(value)) {
-                return "E-mail inválido";
+                return "Enter a valid email";
               }
               return null;
             },
@@ -56,7 +56,7 @@ void showAlertDialogPasswordReset({
                   width: 100,
                   child: TextButton(
                     onPressed: () => Navigator.of(context).pop(),
-                    child: const Text("Cancelar", style: TextStyle(fontSize: 16)),
+                    child: const Text("Cancel", style: TextStyle(fontSize: 16)),
                   ),
                 ),
                 SizedBox(
@@ -76,17 +76,17 @@ void showAlertDialogPasswordReset({
                         if (result) {
                           await authViewModel.sendPasswordResetEmail(email);
                           if (context.mounted) {
-                            authenticationPasswordReset(context, result);
+                            authPasswordResetSnackBar(context, result);
                           }
                         } else {
                           if (context.mounted) {
-                            authenticationPasswordReset(context, result);
+                            authPasswordResetSnackBar(context, result);
                           }
                         }
                         navigator.pop();
                       }
                     },
-                    child: const Text("Enviar", style: TextStyle(fontSize: 16)),
+                    child: const Text("Submit", style: TextStyle(fontSize: 16)),
                   ),
                 ),
               ],

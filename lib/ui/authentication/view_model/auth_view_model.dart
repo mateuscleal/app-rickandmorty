@@ -1,6 +1,7 @@
 import 'package:app/data/repositories/authentication/auth_repository_impl.dart';
 import 'package:flutter/foundation.dart';
 
+import '../../../domain/models/password_reset_result.dart';
 import '../../../domain/models/user.dart';
 import '../../../domain/use_cases/auth/auth_usecases.dart';
 
@@ -53,13 +54,10 @@ class AuthViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<bool> checkIfEmailExists(String email) async {
-    return await _usecases.checkIfEmailExists(email);
-  }
-
-  Future<void> sendPasswordResetEmail(String email) async {
-    await _usecases.sendPasswordResetEmail(email);
+  Future<PasswordResetResult> sendPasswordResetEmail(String email) async {
+    final result = await _usecases.sendPasswordResetEmail(email);
     notifyListeners();
+    return result;
   }
 
   Future<void> signOut() async => await _usecases.signOut();

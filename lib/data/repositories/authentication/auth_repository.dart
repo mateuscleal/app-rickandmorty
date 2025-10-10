@@ -1,3 +1,4 @@
+import '../../../domain/models/password_reset_result.dart';
 import '../../model/user_dto.dart';
 
 abstract class AuthRepository {
@@ -9,9 +10,7 @@ abstract class AuthRepository {
 
   Future<bool> isEmailVerified();
 
-  Future<bool> checkIfEmailExists(String email);
-
-  Future<void> sendPasswordResetEmail(String email);
+  Future<PasswordResetResult> sendPasswordResetEmail(String email);
 
   Future<void> signOut();
 }

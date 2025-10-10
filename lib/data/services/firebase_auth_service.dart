@@ -1,6 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:logger/logger.dart';
 
+import '../../domain/models/password_reset_result.dart';
+
+
 class FirebaseAuthService {
   final logger = Logger();
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -49,29 +52,18 @@ class FirebaseAuthService {
     }
   }
 
-  Future<bool> checkIfEmailExists(String email) async {
-    try {
-      await _auth.signInWithEmailAndPassword(
-        email: email,
-        password: "3#Dr5q9jBtFMcXV",
-      );
-      return true;
-    } on FirebaseAuthException catch (e) {
-      logger.e(FirebaseAuthException(code: e.code, message: e.message));
-      if (e.code == "wrong-password") {
-        return true;
-      } else {
-        return false;
-      }
-    }
-  }
-
-  Future<void> sendPasswordResetEmail(String email) async {
+  Future<PasswordResetResult> sendPasswordResetEmail(String email) async {
     try {
       await _auth.sendPasswordResetEmail(email: email);
+      return PasswordResetResult.success;
     } on FirebaseAuthException catch (e) {
-      logger.e(FirebaseAuthException(code: e.code, message: e.message));
-      return;
+      if (e.code == 'invalid-email' || e.code == 'user-not-found') {
+        return PasswordResetResult.userNotFoundOrUnknown;
+      } else if (e.code == 'network-request-failed') {
+        return PasswordResetResult.networkError;
+      } else {
+        return PasswordResetResult.userNotFoundOrUnknown;
+      }
     }
   }
 

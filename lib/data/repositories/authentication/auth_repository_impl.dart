@@ -1,5 +1,6 @@
 import 'package:app/data/services/firebase_auth_service.dart';
 
+import '../../../domain/models/password_reset_result.dart';
 import '../../model/user_dto.dart';
 import 'auth_repository.dart';
 
@@ -44,10 +45,9 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<bool> isEmailVerified() async => await _service.isEmailVerified();
 
   @override
-  Future<bool> checkIfEmailExists(String email) async => await _service.checkIfEmailExists(email);
-
-  @override
-  Future<void> sendPasswordResetEmail(String email) async => await _service.sendPasswordResetEmail(email);
+  Future<PasswordResetResult> sendPasswordResetEmail(String email) async {
+    return await _service.sendPasswordResetEmail(email);
+  }
 
   @override
   Future<void> signOut() => _service.signOut();

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../domain/models/password_reset_result.dart';
 import '../../../authentication/view_model/auth_view_model.dart';
 import '../show_snack_bar/auth_password_reset_snack_bar.dart';
 
@@ -72,9 +73,8 @@ void showAlertDialogPasswordReset({
                       if (formKey.currentState!.validate()) {
                         final email = emailController.text.trim();
                         final navigator = Navigator.of(context);
-                        final result = await authViewModel.checkIfEmailExists(email);
-                        if (result) {
-                          await authViewModel.sendPasswordResetEmail(email);
+                        final result = await authViewModel.sendPasswordResetEmail(email);
+                        if (result == PasswordResetResult.success) {
                           if (context.mounted) {
                             authPasswordResetSnackBar(context, result);
                           }
